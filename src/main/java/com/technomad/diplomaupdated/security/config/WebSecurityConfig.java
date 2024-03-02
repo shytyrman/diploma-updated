@@ -1,6 +1,7 @@
 package com.technomad.diplomaupdated.security.config;
 
 import com.technomad.diplomaupdated.appuser.AppUserService;
+import com.technomad.diplomaupdated.component.CustomAuthenticationFailureHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class WebSecurityConfig {
 
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -28,7 +30,9 @@ public class WebSecurityConfig {
                     request.requestMatchers("/registration/**").permitAll();
                     request.anyRequest().authenticated();
                 })
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form ->
+                        form.failureHandler(customAuthenticationFailureHandler)
+                                .loginPage("/login"))
                 .authenticationProvider(daoAuthenticationProvider());
 
         return http.build();
