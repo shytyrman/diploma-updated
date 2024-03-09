@@ -20,7 +20,7 @@ public class RegistrationController {
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
         try {
             ConfirmationToken result = registrationService.register(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result + "hello");
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

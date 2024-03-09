@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,9 +36,10 @@ public class AppUserService implements UserDetailsService {
 
     @Transactional
     public ConfirmationToken signUpUser(AppUser appUser) {
-        boolean userExists = appUserRepository.findByUsername(appUser.getUsername()).isPresent();
+        Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(appUser.getUsername());
+        boolean userExists = optionalAppUser.isPresent();
 
-        if (userExists && appUser.getEnabled()) {
+        if (userExists && optionalAppUser.get().isEnabled()) {
             throw new IllegalStateException("email already taken");
         }
         else if (userExists && appUser.getEnabled() == false) {
