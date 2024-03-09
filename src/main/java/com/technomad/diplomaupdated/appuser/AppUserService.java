@@ -34,7 +34,7 @@ public class AppUserService implements UserDetailsService {
     }
 
     @Transactional
-    public String signUpUser(AppUser appUser) {
+    public ConfirmationToken signUpUser(AppUser appUser) {
         boolean userExists = appUserRepository.findByUsername(appUser.getUsername()).isPresent();
 
         if (userExists && appUser.getEnabled()) {
@@ -67,7 +67,7 @@ public class AppUserService implements UserDetailsService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
 //        TODO: SEND EMAIL
-        return token;
+        return confirmationToken;
     }
 
     public int enableAppUser(String user) {

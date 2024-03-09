@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.registration;
 
+import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
         try {
-            registrationService.register(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
+            ConfirmationToken result = registrationService.register(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result + "hello");
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

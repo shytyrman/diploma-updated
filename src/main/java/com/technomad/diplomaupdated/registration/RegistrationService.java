@@ -19,12 +19,12 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public void register(RegistrationRequest request) {
+    public ConfirmationToken register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getUsername());
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
-        appUserService.signUpUser(
+        ConfirmationToken result = appUserService.signUpUser(
                 new AppUser(
                         "Name",
                         "Surname",
@@ -33,6 +33,8 @@ public class RegistrationService {
                         AppUserRole.USER
                 )
         );
+
+        return result;
     }
 
     @Transactional
