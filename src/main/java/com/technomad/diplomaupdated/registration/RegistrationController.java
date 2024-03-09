@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.registration;
 
+import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
     private RegistrationService registrationService;
+    private ConfirmationTokenService confirmationTokenService;
 
     @PostMapping
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
@@ -20,7 +22,29 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(path = "confirm")
+    public ResponseEntity<?> confirm(@RequestParam("token") String token) {
+        try {
+            String result = registrationService.confirmToken(token);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(path = "resend")
+    public ResponseEntity<?> resend(@RequestParam("username") String username) {
+        try {
+            String result = confirmationTokenService.resendCode(username);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }
