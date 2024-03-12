@@ -28,6 +28,8 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/registration/**").permitAll();
+                    request.requestMatchers("/api-docs/**").permitAll();
+                    request.requestMatchers("/swagger/**").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .formLogin(form ->
