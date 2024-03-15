@@ -1,0 +1,31 @@
+version: '3.1'
+
+volumes:
+  pg_diploma:
+
+services:
+  diploma_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=habargde
+      - POSTGRES_DB=diploma
+    volumes:
+      - pg_diploma:/var/lib/postgresql/data
+
+    ports:
+      - "5433:5432"
+
+  app:
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - diploma_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://diploma_db:5433/diploma
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=habargde
+#    JAVA_OPTS: '-Xmx512m'
