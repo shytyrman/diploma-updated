@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.service;
 
+import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.repository.RouteRepository;
@@ -46,8 +47,8 @@ public class RouteService {
         repository.save(route);
     }
 
-    public ArrayList<Route> getRoutes() {
-        ArrayList<Route> result = repository.getUsersRoutes();
-        return result;
-    }
+//    public ArrayList<Route> getRoutes(AppUser appUser) {
+//        ArrayList<Route> result = repository.findRoutesByDriver(appUser.getUsername().toString()).get();
+//        return result;
+//    }
 }

@@ -31,8 +31,8 @@ public class Route {
     @OneToMany(mappedBy = "masterRoute", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JoinColumn(name = "route_id")
     private ArrayList<Stop> routeStations = new ArrayList<>();
-//    @ManyToOne
-//    private AppUser driver;
+    @ManyToOne
+    private AppUser driver;
     private String description;
 
     public Route(String description, ArrayList<Stop> routeStations) {
