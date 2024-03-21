@@ -5,8 +5,8 @@ server:
 
 spring:
   datasource:
-    password: habargde
-    url: jdbc:postgresql://localhost:5432/diploma
+    password: PrzGLtMdiMeQMJoMyoVFFokoRfwoWFiI
+    url: jdbc:postgresql://monorail.proxy.rlwy.net:13902/railway
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
