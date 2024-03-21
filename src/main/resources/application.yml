@@ -2,12 +2,13 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+  port: ${PORT}
 
 spring:
   datasource:
-    password: PrzGLtMdiMeQMJoMyoVFFokoRfwoWFiI
-    url: jdbc:postgresql://monorail.proxy.rlwy.net:13902/railway
-    username: postgres
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
