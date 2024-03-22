@@ -1,0 +1,32 @@
+volumes:
+  pg_diploma:
+
+services:
+  diploma_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=habargde
+      - POSTGRES_DB=diploma
+    volumes:
+      - pg_diploma:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5433:5432"
+
+  diploma_app:
+    restart: always
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - diploma_db
+    environment:
+      POSTGRES_PASSWORD: 'habargde'
+      POSTGRES_USER: 'postgres'
+      PGHOST: diploma_db
+      PGPORT: '5432'
+      POSTGRES_DB: 'diploma'
+      PORT: '8080'
+#    links:
+#      - diploma_db
