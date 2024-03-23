@@ -5,6 +5,8 @@ server:
   port: ${PORT}
 
 spring:
+  profiles:
+    active: ${SPRING_PROFILE}
   datasource:
     password: ${POSTGRES_PASSWORD}
     url: jdbc:postgresql://${PGHOST}:${PGPORT}/${POSTGRES_DB}

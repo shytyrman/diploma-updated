@@ -28,5 +28,6 @@ services:
       PGPORT: '5432'
       POSTGRES_DB: 'diploma'
       PORT: '8080'
+      SPRING_PROFILE: 'docker'
 #    links:
 #      - diploma_db
