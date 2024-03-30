@@ -28,5 +28,7 @@ public class Station {
     @Column(nullable = false)
     private String name;
 
-
+    public Station(String name) {
+        this.name = name;
+    }
 }
