@@ -20,8 +20,8 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(confirmationToken);
     }
 
-    public Optional<ConfirmationToken> getToken(String token) {
-        return confirmationTokenRepository.findByToken(token);
+    public Optional<ConfirmationToken> getTokenByUsername(String username) {
+        return confirmationTokenRepository.findByAppUserId(appUserRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("No such account with token!")).getId());
     }
 
     public int setConfirmedAt(String token) {

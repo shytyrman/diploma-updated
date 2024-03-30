@@ -28,9 +28,9 @@ public class RegistrationController {
     }
 
     @GetMapping(path = "confirm")
-    public ResponseEntity<?> confirm(@RequestParam("token") String token) {
+    public ResponseEntity<?> confirm(@RequestParam("username") String username, @RequestParam("token") String token) {
         try {
-            String result = registrationService.confirmToken(token);
+            String result = registrationService.confirmToken(username, token);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
         }
         catch (Exception e) {
