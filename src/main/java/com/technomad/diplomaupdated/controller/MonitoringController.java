@@ -38,6 +38,6 @@ public class MonitoringController {
             stop.setState(StopState.PASSED);
         }
 
-        ResponseEntity.status(HttpStatus.CREATED).body("Changed succesfully!");
+        return  ResponseEntity.status(HttpStatus.CREATED).body("Changed succesfully!");
     }
 }
