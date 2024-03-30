@@ -37,12 +37,15 @@ public class Stop {
     private LocalDateTime arrivalTime;
     private LocalDateTime departureTime;
     private BigDecimal cost;
+    @Enumerated(EnumType.STRING)
+    private StopState state;
 
-    public Stop(Station station, Route masterRoute, LocalDateTime arrivalTime, LocalDateTime departureTime, BigDecimal cost) {
+    public Stop(Station station, Route masterRoute, LocalDateTime arrivalTime, LocalDateTime departureTime, BigDecimal cost, StopState state) {
         this.station = station;
         this.masterRoute = masterRoute;
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;
         this.cost = cost;
+        this.state = state;
     }
 }
