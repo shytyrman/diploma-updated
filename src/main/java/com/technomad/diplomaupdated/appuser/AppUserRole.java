@@ -1,6 +1,7 @@
 package com.technomad.diplomaupdated.appuser;
 
 public enum AppUserRole {
-    USER,
+    DRIVER,
+    PASSENGER,
     ADMIN
 }

@@ -42,7 +42,7 @@ public class AppUserService implements UserDetailsService {
         if (userExists && optionalAppUser.get().isEnabled()) {
             throw new IllegalStateException("email already taken");
         }
-        else if (userExists && appUser.getEnabled() == false) {
+        else if (userExists && !appUser.getEnabled()) {
             AppUser existingOne = appUserRepository.findByUsername(appUser.getUsername()).get();
             System.out.println("deleting");
             confirmationTokenRepository.deleteByAppUserId(existingOne.getId());

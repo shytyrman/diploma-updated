@@ -24,6 +24,18 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
 
     public ConfirmationToken register(RegistrationRequest request) {
+
+        AppUserRole assigningRoleValue = switch (request.getRole()) {
+            case "admin" -> AppUserRole.ADMIN;
+            case "passenger" -> AppUserRole.DRIVER;
+            case "driver" -> AppUserRole.DRIVER;
+            default -> null;
+        };
+
+        if (assigningRoleValue == null) {
+            throw new IllegalStateException("You haven't defined a user role!");
+        }
+
         boolean isValidEmail = emailValidator.test(request.getUsername());
         if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
@@ -34,7 +46,7 @@ public class RegistrationService {
                         "Surname",
                         request.getUsername(),
                         request.getPassword(),
-                        AppUserRole.USER
+                        assigningRoleValue
                 )
         );
 
