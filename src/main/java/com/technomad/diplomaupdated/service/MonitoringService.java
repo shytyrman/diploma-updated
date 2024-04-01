@@ -35,4 +35,16 @@ public class MonitoringService {
 
         return null;
     }
+
+    public Integer getFirstNotPassedStateId(Route route) {
+
+        ArrayList<Stop> stops = route.getRouteStations();
+
+        for (int i = 0; i < stops.size(); i++) {
+            if (stops.get(i).getState().equals(StopState.NOTPASSED)) {
+                return i;
+            }
+        }
+        return null;
+    }
 }

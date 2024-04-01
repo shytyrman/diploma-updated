@@ -29,13 +29,14 @@ public class MonitoringController {
         ArrayList<Stop> stops = route.getRouteStations();
 
         Integer onStayStateStopId = monitoringService.getOnStayStateId(route);
-        Stop stop = monitoringService.getOnStayState(route);
+        Integer firstNotPassedStopId = monitoringService.getFirstNotPassedStateId(route);
+        Stop onStayStateStop = monitoringService.getOnStayState(route);
 
-        if (stop.equals(null)) {
-            stops.get(onStayStateStopId + 1).setState(StopState.STAY);
+        if (onStayStateStop.equals(null)) {
+            stops.get(firstNotPassedStopId).setState(StopState.STAY);
         }
         else {
-            stop.setState(StopState.PASSED);
+            onStayStateStop.setState(StopState.PASSED);
         }
 
         return  ResponseEntity.status(HttpStatus.CREATED).body("Changed succesfully!");
