@@ -48,4 +48,18 @@ public class MonitoringService {
         }
         return null;
     }
+
+    public Boolean isOnStayStateExists(Route route) {
+
+        List<Stop> stops = route.getRouteStations();
+
+        for (Stop stop : stops) {
+
+            if (stop.getState().equals(StopState.STAY)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }

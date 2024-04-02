@@ -5,6 +5,7 @@ import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
+import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.service.MonitoringService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class MonitoringController {
 
     private final RouteRepository routeRepository;
     private final MonitoringService monitoringService;
+    private final StopRepository stopRepository;
 
     @PostMapping(path = "state/next")
     public ResponseEntity<?> changeRouteStateToNext(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
@@ -31,15 +33,20 @@ public class MonitoringController {
 
         Integer onStayStateStopId = monitoringService.getOnStayStateId(route);
         Integer firstNotPassedStopId = monitoringService.getFirstNotPassedStateId(route);
+        Boolean isOnStayStateExists = monitoringService.isOnStayStateExists(route);
         Stop onStayStateStop = monitoringService.getOnStayState(route);
 
-        if (onStayStateStop.equals(null)) {
-            stops.get(firstNotPassedStopId).setState(StopState.STAY);
+        if (!isOnStayStateExists) {
+            Stop currentStop = stops.get(firstNotPassedStopId);
+            currentStop.setState(StopState.STAY);
+            stopRepository.save(currentStop);
         }
         else {
             onStayStateStop.setState(StopState.PASSED);
+            stopRepository.save(onStayStateStop);
         }
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body("Changed succesfully!");
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(stops.get(firstNotPassedStopId));
     }
 }

@@ -3,6 +3,7 @@ package com.technomad.diplomaupdated.service;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
+import com.technomad.diplomaupdated.model.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StationRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
@@ -35,7 +36,6 @@ public class RouteService {
         route.setDriver(appUser);
 //
         repository.save(route);
-
         while (iterator.hasNext()) {
             CreateRouteStopRequest element = iterator.next();
             Stop currentStop = new Stop();
@@ -44,8 +44,8 @@ public class RouteService {
             currentStop.setCost(element.getCost());
             currentStop.setStation(stationRepository.getByName(element.getStation()));
             currentStop.setMasterRoute(route);
+            currentStop.setState(StopState.NOTPASSED);
             stopRepository.save(currentStop);
-//            route.getRouteStations().add(currentStop);
         }
 //
 
