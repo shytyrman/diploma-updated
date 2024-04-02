@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/monitoring")
@@ -26,7 +27,7 @@ public class MonitoringController {
     public ResponseEntity<?> changeRouteStateToNext(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
         Route route = routeRepository.getReferenceById(routeId);
-        ArrayList<Stop> stops = route.getRouteStations();
+        List<Stop> stops = route.getRouteStations();
 
         Integer onStayStateStopId = monitoringService.getOnStayStateId(route);
         Integer firstNotPassedStopId = monitoringService.getFirstNotPassedStateId(route);

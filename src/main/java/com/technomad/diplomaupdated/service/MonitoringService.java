@@ -6,13 +6,14 @@ import com.technomad.diplomaupdated.model.StopState;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MonitoringService {
 
     public Stop getOnStayState(Route route) {
 
-        ArrayList<Stop> stops = route.getRouteStations();
+        List<Stop> stops = route.getRouteStations();
 
         for (Stop stop : stops
              ) {
@@ -25,7 +26,7 @@ public class MonitoringService {
 
     public Integer getOnStayStateId(Route route) {
 
-        ArrayList<Stop> stops = route.getRouteStations();
+        List<Stop> stops = route.getRouteStations();
 
         for (int i = 0; i < stops.size(); i++) {
             if (stops.get(i).getState().equals(StopState.STAY)) {
@@ -38,7 +39,7 @@ public class MonitoringService {
 
     public Integer getFirstNotPassedStateId(Route route) {
 
-        ArrayList<Stop> stops = route.getRouteStations();
+        List<Stop> stops = route.getRouteStations();
 
         for (int i = 0; i < stops.size(); i++) {
             if (stops.get(i).getState().equals(StopState.NOTPASSED)) {

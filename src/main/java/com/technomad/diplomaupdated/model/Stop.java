@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Stop {
     @ManyToOne
     private Station station;
     @ManyToOne
+    @JsonIgnoreProperties({"routeStations"})
     @JoinColumn(name = "route-id")
     private Route masterRoute;
     private LocalDateTime arrivalTime;

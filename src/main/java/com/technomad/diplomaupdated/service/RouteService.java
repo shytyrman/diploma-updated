@@ -5,6 +5,7 @@ import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StationRepository;
+import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.request.CreateRouteRequest;
 import com.technomad.diplomaupdated.request.CreateRouteStopRequest;
 import lombok.AllArgsConstructor;
@@ -23,13 +24,17 @@ public class RouteService {
 
     private final RouteRepository repository;
     private final StationRepository stationRepository;
+    private final StopRepository stopRepository;
 
-    public void addRoute(CreateRouteRequest request) {
+    public Route addRoute(CreateRouteRequest request, AppUser appUser) {
 
         ArrayList<CreateRouteStopRequest> stopRequests = request.getStops();
         ArrayList<Stop> stops = new ArrayList<>();
         Iterator<CreateRouteStopRequest> iterator = stopRequests.iterator();
         Route route = new Route();
+        route.setDriver(appUser);
+//
+        repository.save(route);
 
         while (iterator.hasNext()) {
             CreateRouteStopRequest element = iterator.next();
@@ -39,12 +44,14 @@ public class RouteService {
             currentStop.setCost(element.getCost());
             currentStop.setStation(stationRepository.getByName(element.getStation()));
             currentStop.setMasterRoute(route);
-            stops.add(currentStop);
+            stopRepository.save(currentStop);
+//            route.getRouteStations().add(currentStop);
         }
+//
 
-        route.setRouteStations(stops);
         route.setDescription(request.getDescription());
         repository.save(route);
+        return route;
     }
 
 //    public ArrayList<Route> getRoutes(AppUser appUser) {
