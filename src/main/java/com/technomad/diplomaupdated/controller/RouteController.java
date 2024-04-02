@@ -31,13 +31,13 @@ public class RouteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> getRouteById(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
-//
-//        Optional<Route> result = routeRepository.findById(routeId);
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(result.isPresent());
-//    }
+    @GetMapping(params = {"routeId"})
+    public ResponseEntity<?> getRouteById(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
+
+        Optional<Route> result = routeRepository.findById(routeId);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(result.get());
+    }
 
     @PostMapping(path = "create")
     public ResponseEntity<?> createRoute(@AuthenticationPrincipal AppUser appUser, @RequestBody CreateRouteRequest request) {
