@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Stop {
+public class Stop{
 
     @Id
     @SequenceGenerator(

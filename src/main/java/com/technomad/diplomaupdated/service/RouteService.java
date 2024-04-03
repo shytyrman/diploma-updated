@@ -48,8 +48,8 @@ public class RouteService {
             stopRepository.save(currentStop);
         }
 //
-
         route.setDescription(request.getDescription());
+        route.setIsActive(true);
         repository.save(route);
         return route;
     }

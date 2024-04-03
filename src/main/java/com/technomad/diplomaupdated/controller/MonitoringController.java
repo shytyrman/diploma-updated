@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.controller;
 
+import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -24,8 +26,9 @@ public class MonitoringController {
     private final RouteRepository routeRepository;
     private final MonitoringService monitoringService;
     private final StopRepository stopRepository;
+    private final StopsComparator stopsComparator;
 
-    @PostMapping(path = "state/next")
+    @PutMapping(path = "state/next")
     public ResponseEntity<?> changeRouteStateToNext(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
         Route route = routeRepository.getReferenceById(routeId);
@@ -46,7 +49,7 @@ public class MonitoringController {
             stopRepository.save(onStayStateStop);
         }
 
-
+        stops.sort(stopsComparator);
         return  ResponseEntity.status(HttpStatus.CREATED).body(stops.get(firstNotPassedStopId));
     }
 }

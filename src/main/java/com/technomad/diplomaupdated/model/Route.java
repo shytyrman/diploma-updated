@@ -31,6 +31,7 @@ public class Route {
     )
     private Long id;
 
+    private Boolean isActive;
     @ManyToOne
     private AppUser driver;
     private String description;
@@ -40,8 +41,7 @@ public class Route {
 ////    @JoinColumn(name = "route_id")
     private List<Stop> routeStations = new ArrayList<>();
 
-    public Route(String description, ArrayList<Stop> routeStations) {
-//        this.routeStations = routeStations;
+    public Route(String description) {
         this.description = description;
     }
 }
