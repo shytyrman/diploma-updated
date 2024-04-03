@@ -28,7 +28,7 @@ public class MonitoringController {
     private final StopRepository stopRepository;
     private final StopsComparator stopsComparator;
 
-    @PutMapping(path = "state/next")
+    @PostMapping(path = "state/next")
     public ResponseEntity<?> changeRouteStateToNext(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
         Route route = routeRepository.getReferenceById(routeId);
