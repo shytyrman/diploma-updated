@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.eclipse.angus.mail.iap.ByteArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class Route {
     )
     private Long id;
 
-    private Boolean isActive;
+    private RouteState routeState;
     @ManyToOne
     private AppUser driver;
     private String description;

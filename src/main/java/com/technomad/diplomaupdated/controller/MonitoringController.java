@@ -3,12 +3,14 @@ package com.technomad.diplomaupdated.controller;
 import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
+import com.technomad.diplomaupdated.model.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.service.MonitoringService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,7 +36,14 @@ public class MonitoringController {
         Route route = routeRepository.getReferenceById(routeId);
         List<Stop> stops = route.getRouteStations();
 
-        Integer onStayStateStopId = monitoringService.getOnStayStateId(route);
+        Boolean notPassedExists = monitoringService.isNotPassedExists(route);
+
+        if (!notPassedExists) {
+            route.setRouteState(RouteState.NON_ACTIVE);
+            routeRepository.save(route);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Route is done");
+        }
+
         Integer firstNotPassedStopId = monitoringService.getFirstNotPassedStateId(route);
         Boolean isOnStayStateExists = monitoringService.isOnStayStateExists(route);
         Stop onStayStateStop = monitoringService.getOnStayState(route);
@@ -51,5 +60,15 @@ public class MonitoringController {
 
         stops.sort(stopsComparator);
         return  ResponseEntity.status(HttpStatus.CREATED).body(stops.get(firstNotPassedStopId));
+    }
+
+    @PostMapping(path = "launch")
+    public ResponseEntity<?> launch(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
+
+        Route route = routeRepository.getReferenceById(routeId);
+        route.setRouteState(RouteState.ACTIVE);
+        routeRepository.save(route);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Route launched succesfully!");
     }
 }

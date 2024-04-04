@@ -1,11 +1,14 @@
 package com.technomad.diplomaupdated.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.engine.internal.Nullability;
 import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
@@ -30,7 +33,7 @@ public class Stop{
     )
     private Long id;
 
-    @ManyToOne
+    @ManyToOne()
     private Station station;
     @ManyToOne
     @JsonIgnoreProperties({"routeStations"})

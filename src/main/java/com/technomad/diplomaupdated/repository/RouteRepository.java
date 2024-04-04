@@ -2,6 +2,7 @@ package com.technomad.diplomaupdated.repository;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
+import com.technomad.diplomaupdated.model.Stop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

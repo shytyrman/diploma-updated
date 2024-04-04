@@ -62,4 +62,18 @@ public class MonitoringService {
         }
         return false;
     }
+
+    public Boolean isNotPassedExists(Route route) {
+
+        List<Stop> stops = route.getRouteStations();
+
+        for (Stop stop : stops) {
+
+            if (stop.getState().equals(StopState.NOTPASSED)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }

@@ -1,5 +1,7 @@
 package com.technomad.diplomaupdated.appuser;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.technomad.diplomaupdated.model.Route;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +18,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@JsonIgnoreProperties({"authorities", "credentialsNonExpired", "accountNonExpired", "accountNonLocked"})
 public class AppUser implements UserDetails {
 
     @Id
@@ -31,11 +34,16 @@ public class AppUser implements UserDetails {
     private Long id;
     private String firstName;
     private String lastName;
+    @JsonIgnore
     private String username;
+    @JsonIgnore
     private String password;
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private AppUserRole appUserRole;
+    @JsonIgnore
     private Boolean locked = false;
+    @JsonIgnore
     private Boolean enabled = false;
 //    @OneToMany(mappedBy = "driver")
 //    private ArrayList<Route> routes;

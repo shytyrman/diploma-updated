@@ -2,6 +2,7 @@ package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
+import com.technomad.diplomaupdated.model.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
@@ -39,6 +40,11 @@ public class RouteService {
         while (iterator.hasNext()) {
             CreateRouteStopRequest element = iterator.next();
             Stop currentStop = new Stop();
+            
+            if (stationRepository.getByName(element.getStation()) == null) {
+                throw new IllegalStateException("Wrong stop name, try with correct station name!");
+            }
+
             currentStop.setArrivalTime(element.getArrivalTime());
             currentStop.setDepartureTime(element.getDepartureTime());
             currentStop.setCost(element.getCost());
@@ -49,7 +55,7 @@ public class RouteService {
         }
 //
         route.setDescription(request.getDescription());
-        route.setIsActive(true);
+        route.setRouteState(RouteState.AVAILABLE);
         repository.save(route);
         return route;
     }

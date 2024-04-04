@@ -46,13 +46,13 @@ public class RouteController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Created succesfully!");
     }
 
-    @PostMapping(path = "start")
-    public ResponseEntity<?> startRoute(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
-
-        Optional<Route> optionalRoute = routeRepository.findById(routeId);
-        Route route = optionalRoute.get();
-
-        route.setIsActive(false);
-        return ResponseEntity.status(HttpStatus.OK).body("Route is started!");
-    }
+//    @PostMapping(path = "start")
+//    public ResponseEntity<?> startRoute(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
+//
+//        Optional<Route> optionalRoute = routeRepository.findById(routeId);
+//        Route route = optionalRoute.get();
+//
+//        route.setIsActive(false);
+//        return ResponseEntity.status(HttpStatus.OK).body("Route is started!");
+//    }
 }
