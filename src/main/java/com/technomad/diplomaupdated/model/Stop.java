@@ -44,6 +44,7 @@ public class Stop{
     private BigDecimal cost;
     @Enumerated(EnumType.STRING)
     private StopState state;
+    private Integer orderInList;
 
     public Stop(Station station, Route masterRoute, LocalDateTime arrivalTime, LocalDateTime departureTime, BigDecimal cost, StopState state) {
         this.station = station;

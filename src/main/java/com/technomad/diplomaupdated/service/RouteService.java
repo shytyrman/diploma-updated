@@ -35,6 +35,7 @@ public class RouteService {
         Iterator<CreateRouteStopRequest> iterator = stopRequests.iterator();
         Route route = new Route();
         route.setDriver(appUser);
+        int order = 0;
 //
         repository.save(route);
         while (iterator.hasNext()) {
@@ -51,6 +52,7 @@ public class RouteService {
             currentStop.setStation(stationRepository.getByName(element.getStation()));
             currentStop.setMasterRoute(route);
             currentStop.setState(StopState.NOTPASSED);
+            currentStop.setOrderInList(order++);
             stopRepository.save(currentStop);
         }
 //
