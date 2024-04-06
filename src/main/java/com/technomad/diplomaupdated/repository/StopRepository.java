@@ -18,4 +18,5 @@ public interface StopRepository extends JpaRepository<Stop, Long> {
     public List<Stop> findAllByState(StopState state);
     public List<Stop> findAllByStationNameAndState(String name, StopState state);
     public List<Stop> findAllByStationNameAndStateAndMasterRouteRouteState(String stopName, StopState stopState, RouteState routeState);
+    public List<Stop> findAllByStationNameAndStateAndMasterRouteRouteStateAndDepartureTime(String stopName, StopState state, RouteState routeState, LocalDateTime localDateTime);
 }
