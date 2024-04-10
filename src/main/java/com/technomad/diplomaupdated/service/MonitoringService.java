@@ -2,10 +2,9 @@ package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
+import com.technomad.diplomaupdated.model.state.StopState;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

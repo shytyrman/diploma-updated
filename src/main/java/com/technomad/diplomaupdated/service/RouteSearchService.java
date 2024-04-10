@@ -1,17 +1,15 @@
 package com.technomad.diplomaupdated.service;
 
-import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.model.Route;
-import com.technomad.diplomaupdated.model.RouteState;
+import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
+import com.technomad.diplomaupdated.model.state.StopState;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 

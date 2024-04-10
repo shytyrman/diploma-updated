@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.request;
+package com.technomad.diplomaupdated.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

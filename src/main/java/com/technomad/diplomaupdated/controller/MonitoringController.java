@@ -3,21 +3,18 @@ package com.technomad.diplomaupdated.controller;
 import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
-import com.technomad.diplomaupdated.model.RouteState;
+import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
+import com.technomad.diplomaupdated.model.state.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.service.MonitoringService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -37,6 +34,10 @@ public class MonitoringController {
         List<Stop> stops = route.getRouteStations();
 
         Boolean notPassedExists = monitoringService.isNotPassedExists(route);
+
+        if (!route.getRouteState().equals(RouteState.ACTIVE)) {
+            throw new IllegalStateException("Route isn't active!");
+        }
 
         if (!notPassedExists) {
             route.setRouteState(RouteState.NON_ACTIVE);

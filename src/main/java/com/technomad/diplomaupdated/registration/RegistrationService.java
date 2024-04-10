@@ -27,7 +27,7 @@ public class RegistrationService {
 
         AppUserRole assigningRoleValue = switch (request.getRole()) {
             case "admin" -> AppUserRole.ADMIN;
-            case "passenger" -> AppUserRole.DRIVER;
+            case "passenger" -> AppUserRole.PASSENGER;
             case "driver" -> AppUserRole.DRIVER;
             default -> null;
         };

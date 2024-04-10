@@ -2,14 +2,14 @@ package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
-import com.technomad.diplomaupdated.model.RouteState;
+import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
+import com.technomad.diplomaupdated.model.state.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StationRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
-import com.technomad.diplomaupdated.request.CreateRouteRequest;
-import com.technomad.diplomaupdated.request.CreateRouteStopRequest;
+import com.technomad.diplomaupdated.model.request.CreateRouteRequest;
+import com.technomad.diplomaupdated.model.request.CreateRouteStopRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

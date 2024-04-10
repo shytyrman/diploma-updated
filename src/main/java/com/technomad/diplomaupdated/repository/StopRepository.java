@@ -1,12 +1,11 @@
 package com.technomad.diplomaupdated.repository;
 
-import com.technomad.diplomaupdated.model.RouteState;
+import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
+import com.technomad.diplomaupdated.model.state.StopState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

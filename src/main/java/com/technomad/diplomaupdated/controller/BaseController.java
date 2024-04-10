@@ -1,8 +1,7 @@
 package com.technomad.diplomaupdated.controller;
 
 import com.technomad.diplomaupdated.model.Stop;
-import com.technomad.diplomaupdated.model.StopState;
-import com.technomad.diplomaupdated.registration.RegistrationRequest;
+import com.technomad.diplomaupdated.model.state.StopState;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import lombok.AllArgsConstructor;
@@ -10,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
