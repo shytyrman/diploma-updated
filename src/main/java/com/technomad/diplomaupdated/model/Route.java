@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SortComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class Route {
             if (routePiece.getStartPoint().equals(start)) {
                 active = true;
             }
-            if (!active && routePiece.isPlaceFree(place)) {
+            if (active && !routePiece.isPlaceFree(place)) {
                 return false;
             }
             if (routePiece.getEndPoint().equals(finish)) {

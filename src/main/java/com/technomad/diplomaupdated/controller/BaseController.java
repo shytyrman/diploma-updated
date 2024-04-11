@@ -1,7 +1,12 @@
 package com.technomad.diplomaupdated.controller;
 
+import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
+import com.technomad.diplomaupdated.model.Route;
+import com.technomad.diplomaupdated.model.RoutePiece;
 import com.technomad.diplomaupdated.model.Stop;
+import com.technomad.diplomaupdated.model.request.ReservePlacesRequest;
 import com.technomad.diplomaupdated.model.state.StopState;
+import com.technomad.diplomaupdated.repository.RoutePieceRepository;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +23,8 @@ public class BaseController {
 
     private final StopRepository stopRepository;
     private final RouteRepository routeRepository;
+    private final RoutePieceRepository routePieceRepository;
+    private final StopsComparatorByOrder stopsComparatorByOrder;
 
     @GetMapping
     public ResponseEntity<?> base() {
@@ -30,6 +37,23 @@ public class BaseController {
 //        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
         List<Stop> result = stopRepository.findAllByStationName(stopName);
         return ResponseEntity.status(HttpStatus.FOUND).body(result);
+    }
+
+    @PostMapping(path = "test/createRoutePiece")
+    public ResponseEntity<?> createRoutePiece(@RequestBody ReservePlacesRequest request) {
+//        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
+        Route route = routeRepository.findById(request.getRoute()).get();
+//        Stop start = stopRepository.findById(request.getStart()).get();
+//        Stop finish = stopRepository.findById(request.getFinish()).get();
+//
+//        RoutePiece routePiece = new RoutePiece();
+//        routePiece.setMasterRoute(route);
+//        routePiece.setStartPoint(start);
+//        routePiece.setEndPoint(finish);
+//
+//        routePieceRepository.save(routePiece);
+        route.getRouteStations().sort(stopsComparatorByOrder);
+        return ResponseEntity.status(HttpStatus.FOUND).body(route.getRouteStations());
     }
 
     @GetMapping(path = "test/getStopByState")

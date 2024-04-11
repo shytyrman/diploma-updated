@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.controller;
 
+import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.repository.RouteRepository;
@@ -21,11 +22,17 @@ public class RouteController {
 
     private final RouteService routeService;
     private final RouteRepository routeRepository;
+    private final StopsComparatorByOrder stopsComparatorByOrder;
 
     @GetMapping
     public ResponseEntity<?> getRoutes(@AuthenticationPrincipal AppUser appUser) {
 
         List<Route> result = routeRepository.findByDriverId(appUser.getId());
+
+        for (Route route : result
+             ) {
+            route.getRouteStations().sort(stopsComparatorByOrder);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -41,8 +48,9 @@ public class RouteController {
     @PostMapping(path = "create")
     public ResponseEntity<?> createRoute(@AuthenticationPrincipal AppUser appUser, @RequestBody CreateRouteRequest request) {
 
-        routeService.addRoute(request, appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Created succesfully!");
+        Route route = routeService.addRoute(request, appUser);
+        routeService.addPiecesToRoute(route);
+        return ResponseEntity.status(HttpStatus.CREATED).body(route);
     }
 
 //    @PostMapping(path = "start")

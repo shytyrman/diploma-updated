@@ -42,10 +42,10 @@ public class Ticket {
     private Integer place;
 
     private UUID uuid;
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private TicketState ticketState;
 
-    public Ticket(AppUser ticketOwner, Route forRoute, Stop fromStop, Stop toStop, Integer place, UUID uuid, TicketState ticketState) {
+    public Ticket(AppUser ticketOwner, Route forRoute, Stop fromStop, Stop toStop, Integer place) {
         this.ticketOwner = ticketOwner;
         if (!forRoute.getRouteState().equals(RouteState.AVAILABLE)) {
             throw new IllegalStateException("This Route is already done!");

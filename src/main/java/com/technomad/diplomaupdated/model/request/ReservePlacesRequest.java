@@ -5,15 +5,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-
 @Getter
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class CreateRouteRequest {
+public class ReservePlacesRequest {
 
-    private final String description;
-    private final ArrayList<CreateRouteStopRequest> stops;
-    
+    private final Long route;
+    private final Long start;
+    private final Long finish;
+    private final Integer place;
 }

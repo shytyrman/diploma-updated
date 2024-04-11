@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Getter
-@AllArgsConstructor
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
+@AllArgsConstructor
 public class CreateRouteStopRequest {
 
     private final String station;

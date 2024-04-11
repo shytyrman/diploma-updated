@@ -1,5 +1,7 @@
 package com.technomad.diplomaupdated.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,9 +30,11 @@ public class RoutePiece {
     private Route masterRoute;
 
     @OneToOne
-    Stop startPoint;
+    @JsonIgnoreProperties({"masterRoute", "arrivalTime", "departureTime", "cost", "state"})
+    private Stop startPoint;
     @OneToOne
-    Stop endPoint;
+    @JsonIgnoreProperties({"masterRoute", "arrivalTime", "departureTime", "cost", "state"})
+    private Stop endPoint;
 
     @OneToMany(mappedBy = "masterRoutePiece")
     List<TicketCodeHolder> bookings = new ArrayList<>();
@@ -49,6 +53,6 @@ public class RoutePiece {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 }
