@@ -7,16 +7,13 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class CreateRouteStopRequest {
-
-    private final String station;
-    private final LocalDateTime arrivalTime;
-    private final LocalDateTime departureTime;
-    private final BigDecimal cost;
-}
+//@Getter
+//@ToString
+//@EqualsAndHashCode
+//@AllArgsConstructor
+public record CreateRouteStopRequest(
+        String station,
+        LocalDateTime arrivalTime,
+        LocalDateTime departureTime,
+        BigDecimal cost) {}

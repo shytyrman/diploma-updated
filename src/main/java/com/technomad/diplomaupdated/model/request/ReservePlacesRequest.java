@@ -5,14 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class ReservePlacesRequest {
-
-    private final Long route;
-    private final Long start;
-    private final Long finish;
-    private final Integer place;
-}
+//@Getter
+//@ToString
+//@EqualsAndHashCode
+//@AllArgsConstructor
+public record ReservePlacesRequest(
+        Long route,
+        Long start,
+        Long finish,
+        Integer place) {}

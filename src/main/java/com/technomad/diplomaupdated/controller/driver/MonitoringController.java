@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.driver;
 
 import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.appuser.AppUser;
@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/monitoring")
 @AllArgsConstructor
-public class MonitoringController {
+public class            MonitoringController {
 
     private final RouteRepository routeRepository;
     private final MonitoringService monitoringService;

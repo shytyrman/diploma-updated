@@ -1,14 +1,13 @@
 package com.technomad.diplomaupdated.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 public class TicketCodeHolder {
 
@@ -25,6 +24,7 @@ public class TicketCodeHolder {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private RoutePiece masterRoutePiece;
     private Integer place;
     private UUID uuid;

@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.driver;
 
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;

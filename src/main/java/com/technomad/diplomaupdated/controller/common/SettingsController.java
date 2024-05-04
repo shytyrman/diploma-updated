@@ -1,6 +1,7 @@
-package com.technomad.diplomaupdated.settings;
+package com.technomad.diplomaupdated.controller.common;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.service.SettingsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

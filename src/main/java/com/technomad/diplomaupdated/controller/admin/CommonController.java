@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.admin;
 
 import com.technomad.diplomaupdated.model.Station;
 import com.technomad.diplomaupdated.repository.StationRepository;

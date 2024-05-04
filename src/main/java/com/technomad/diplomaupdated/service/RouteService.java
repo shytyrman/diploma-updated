@@ -36,11 +36,10 @@ public class RouteService {
 
     public Route addRoute(CreateRouteRequest request, AppUser appUser) {
 
-        ArrayList<CreateRouteStopRequest> stopRequests = request.getStops();
+        ArrayList<CreateRouteStopRequest> stopRequests = request.stops();
         Iterator<CreateRouteStopRequest> iterator = stopRequests.iterator();
         Route route = new Route();
         route.setDriver(appUser);
-        List<Stop> stops = route.getRouteStations();
         int order = 0;
 //
         repository.save(route);
@@ -48,14 +47,14 @@ public class RouteService {
             CreateRouteStopRequest element = iterator.next();
             Stop currentStop = new Stop();
             
-            if (stationRepository.getByName(element.getStation()) == null) {
+            if (stationRepository.getByName(element.station()) == null) {
                 throw new IllegalStateException("Wrong stop name, try with correct station name!");
             }
 
-            currentStop.setArrivalTime(element.getArrivalTime());
-            currentStop.setDepartureTime(element.getDepartureTime());
-            currentStop.setCost(element.getCost());
-            currentStop.setStation(stationRepository.getByName(element.getStation()));
+            currentStop.setArrivalTime(element.arrivalTime());
+            currentStop.setDepartureTime(element.departureTime());
+            currentStop.setCost(element.cost());
+            currentStop.setStation(stationRepository.getByName(element.station()));
             currentStop.setMasterRoute(route);
             currentStop.setState(StopState.NOTPASSED);
             currentStop.setOrderInList(order++);
@@ -63,34 +62,13 @@ public class RouteService {
         }
 
         repository.save(route);
-
-//        Iterator<Stop> iteratorStop = route.getRouteStations().iterator();
-//        Stop previous;
-//        iteratorStop.
-
-//        stops.sort(stopsComparatorByOrder);
-//
-//        for (int i = 1; i < 5; i++) {
-//            RoutePiece routePiece = new RoutePiece();
-//            routePiece.setMasterRoute(route);
-////            routePiece.setStartPoint(route.getRouteStations().get(i));
-////            routePiece.setEndPoint(route.getRouteStations().get(i + 1));
-//            routePiece.setStartPoint(stops.get(i));
-//            routePieceRepository.save(routePiece);
-//        }
-//
-        route.setDescription(request.getDescription());
+        route.setDescription(request.description());
         route.setRouteState(RouteState.AVAILABLE);
         repository.save(route);
         return route;
     }
 
-//    public ArrayList<Route> getRoutes(AppUser appUser) {
-//        ArrayList<Route> result = repository.findRoutesByDriver(appUser.getUsername().toString()).get();
-//        return result;
-//    }
-
-    public Route addPiecesToRoute(Route route) {
+    public void addPiecesToRoute(Route route) {
 
         List<Stop> stops = stopRepository.findAllByMasterRoute(route);
         stops.sort(stopsComparatorByOrder);
@@ -98,13 +76,9 @@ public class RouteService {
         for (int i = 1; i < stops.size(); i++) {
             RoutePiece routePiece = new RoutePiece();
             routePiece.setMasterRoute(route);
-//            routePiece.setStartPoint(route.getRouteStations().get(i));
-//            routePiece.setEndPoint(route.getRouteStations().get(i + 1));
             routePiece.setStartPoint(stops.get(i - 1));
             routePiece.setEndPoint(stops.get(i));
             routePieceRepository.save(routePiece);
         }
-
-        return route;
     }
 }

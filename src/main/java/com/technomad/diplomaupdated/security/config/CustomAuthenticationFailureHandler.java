@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.component;
+package com.technomad.diplomaupdated.security.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

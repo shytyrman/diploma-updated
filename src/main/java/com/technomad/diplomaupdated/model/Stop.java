@@ -3,19 +3,14 @@ package com.technomad.diplomaupdated.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.technomad.diplomaupdated.model.state.StopState;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Stop{
 
     @Id

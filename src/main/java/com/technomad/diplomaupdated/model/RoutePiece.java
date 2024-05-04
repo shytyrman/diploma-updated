@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 public class RoutePiece {
 

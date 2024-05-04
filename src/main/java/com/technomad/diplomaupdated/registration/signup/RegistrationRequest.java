@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.registration;
+package com.technomad.diplomaupdated.registration.signup;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

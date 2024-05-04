@@ -1,10 +1,9 @@
-package com.technomad.diplomaupdated.registration;
+package com.technomad.diplomaupdated.registration.signup;
 
 import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

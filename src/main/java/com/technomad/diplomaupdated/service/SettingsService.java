@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.settings;
+package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.appuser.AppUserService;

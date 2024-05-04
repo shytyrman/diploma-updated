@@ -1,8 +1,7 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.admin;
 
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.model.Route;
-import com.technomad.diplomaupdated.model.RoutePiece;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.request.ReservePlacesRequest;
 import com.technomad.diplomaupdated.model.state.StopState;
@@ -42,7 +41,7 @@ public class BaseController {
     @PostMapping(path = "test/createRoutePiece")
     public ResponseEntity<?> createRoutePiece(@RequestBody ReservePlacesRequest request) {
 //        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
-        Route route = routeRepository.findById(request.getRoute()).get();
+        Route route = routeRepository.findById(request.route()).get();
 //        Stop start = stopRepository.findById(request.getStart()).get();
 //        Stop finish = stopRepository.findById(request.getFinish()).get();
 //

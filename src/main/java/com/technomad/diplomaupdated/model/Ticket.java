@@ -4,18 +4,13 @@ import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.state.TicketState;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Ticket {
 
 

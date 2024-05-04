@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.passenger;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,11 +32,11 @@ public class BookController {
     @GetMapping(path = "places")
     public ResponseEntity<?> getPlaces(@RequestBody GetPlacesRequest request) {
 
-        Route route = routeRepository.getReferenceById(request.getRoute());
-        Stop start = stopRepository.getReferenceById(request.getStart());
-        Stop finish = stopRepository.getReferenceById(request.getFinish());
-        Long startId = request.getStart();
-        Long finishId = request.getFinish();
+        Route route = routeRepository.getReferenceById(request.route());
+        Stop start = stopRepository.getReferenceById(request.start());
+        Stop finish = stopRepository.getReferenceById(request.finish());
+        Long startId = request.start();
+        Long finishId = request.finish();
 
         if (!route.hasStopId(startId) || !route.hasStopId(finishId)) {
             throw new IllegalStateException("These stop(s) do(es)n't belong to this route");
@@ -50,10 +49,10 @@ public class BookController {
     @PostMapping(path = "reserve")
     public ResponseEntity<?> reservePlaces(@AuthenticationPrincipal AppUser passenger, @RequestBody ReservePlacesRequest request) {
 
-        Route route = routeRepository.findById(request.getRoute()).get();
-        Stop start = stopRepository.findById(request.getStart()).get();
-        Stop finish = stopRepository.findById(request.getFinish()).get();
-        Integer place = request.getPlace();
+        Route route = routeRepository.findById(request.route()).get();
+        Stop start = stopRepository.findById(request.start()).get();
+        Stop finish = stopRepository.findById(request.finish()).get();
+        Integer place = request.place();
 
         Ticket ticket = new Ticket(passenger, route, start, finish, place);
         ticketRepository.save(ticket);

@@ -1,4 +1,4 @@
-package com.technomad.diplomaupdated.controller;
+package com.technomad.diplomaupdated.controller.passenger;
 
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.service.RouteSearchService;

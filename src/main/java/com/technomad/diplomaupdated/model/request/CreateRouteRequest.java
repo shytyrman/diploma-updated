@@ -7,13 +7,10 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
-public class CreateRouteRequest {
-
-    private final String description;
-    private final ArrayList<CreateRouteStopRequest> stops;
-    
-}
+//@Getter
+//@ToString
+//@EqualsAndHashCode
+//@AllArgsConstructor
+public record CreateRouteRequest(
+        String description,
+        ArrayList<CreateRouteStopRequest> stops) {}
