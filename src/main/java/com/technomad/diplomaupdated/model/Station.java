@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Data
 @NoArgsConstructor
+//@Table(uniqueConstraints = {@UniqueConstraint(name = "uniqueNameConstraint", columnNames = {"name"})})
 public class Station {
 
     @Id
@@ -20,7 +21,7 @@ public class Station {
     )
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Station(String name) {
