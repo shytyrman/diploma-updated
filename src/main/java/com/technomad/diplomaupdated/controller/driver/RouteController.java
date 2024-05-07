@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.controller.driver;
 
+import com.technomad.diplomaupdated.additional.RoutePiecesComparator;
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
@@ -40,9 +41,11 @@ public class RouteController {
     @GetMapping(params = {"routeId"})
     public ResponseEntity<?> getRouteById(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
-        Optional<Route> result = routeRepository.findById(routeId);
+        Optional<Route> optionalResult = routeRepository.findById(routeId);
+        Route result = optionalResult.orElseThrow(() -> new IllegalStateException("There is no such route!"));
+        result.getRouteStations().sort(stopsComparatorByOrder);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(result.get());
+        return ResponseEntity.status(HttpStatus.FOUND).body(result);
     }
 
     @PostMapping(path = "create")
