@@ -4,7 +4,9 @@ import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.Ticket;
+import com.technomad.diplomaupdated.model.request.GetPlacesByStopNamesRequest;
 import com.technomad.diplomaupdated.model.request.GetPlacesRequest;
+import com.technomad.diplomaupdated.model.request.ReservePlacesByStopNamesRequest;
 import com.technomad.diplomaupdated.model.request.ReservePlacesRequest;
 import com.technomad.diplomaupdated.model.response.Place;
 import com.technomad.diplomaupdated.repository.RouteRepository;
@@ -38,9 +40,24 @@ public class BookController {
         Long startId = request.start();
         Long finishId = request.finish();
 
-        if (!route.hasStopId(startId) || !route.hasStopId(finishId)) {
-            throw new IllegalStateException("These stop(s) do(es)n't belong to this route");
-        }
+        return getResponseEntity(route, start, finish, startId, finishId);
+    }
+
+    @GetMapping(path = "places/by-name")
+    public ResponseEntity<?> getPlacesByStopNames(@RequestBody GetPlacesByStopNamesRequest request) {
+
+//        Route route = routeRepository.getReferenceById(request.route());
+        Route route = routeRepository.findById(request.route()).orElseThrow(() -> new IllegalStateException("There is no Route with such id!"));
+        Stop start = stopRepository.findStopByMasterRouteAndStation_Name(route, request.start()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Start Stop is missing)"));
+        Stop finish = stopRepository.findStopByMasterRouteAndStation_Name(route, request.finish()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station namei in this Route! (Final Stop is missing)"));
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        return getResponseEntity(route, start, finish, startId, finishId);
+    }
+
+    private ResponseEntity<?> getResponseEntity(Route route, Stop start, Stop finish, Long startId, Long finishId) {
+        checkSelectedStopOrders(startId, finishId, route);
 
         List<Place> result = bookService.getReservedPlaces(route, start, finish);
         return ResponseEntity.status(HttpStatus.FOUND).body(result);
@@ -49,16 +66,50 @@ public class BookController {
     @PostMapping(path = "reserve")
     public ResponseEntity<?> reservePlaces(@AuthenticationPrincipal AppUser passenger, @RequestBody ReservePlacesRequest request) {
 
-        Route route = routeRepository.findById(request.route()).get();
-        Stop start = stopRepository.findById(request.start()).get();
-        Stop finish = stopRepository.findById(request.finish()).get();
+        Route route = routeRepository.findById(request.route()).orElseThrow(() -> new IllegalStateException("There is no Route with such id!"));
+        Stop start = stopRepository.findById(request.start()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Start Stop is missing)"));
+        Stop finish = stopRepository.findById(request.finish()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Final Stop is missing)"));
         Integer place = request.place();
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        checkSelectedStopOrders(startId, finishId, route);
 
         Ticket ticket = new Ticket(passenger, route, start, finish, place);
         ticketRepository.save(ticket);
 
         bookService.reserve(route, start, finish, place, ticket.getUuid());
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Places are reserved!");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticket);
+    }
+
+    @PostMapping(path = "reserve/by-name")
+    public ResponseEntity<?> reservePlacesByStopNames(@AuthenticationPrincipal AppUser passenger, @RequestBody ReservePlacesByStopNamesRequest request) {
+
+        Route route = routeRepository.findById(request.route()).orElseThrow(() -> new IllegalStateException("There is no Route with such id!"));
+        Stop start = stopRepository.findStopByMasterRouteAndStation_Name(route, request.start()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Start Stop is missing)"));
+        Stop finish = stopRepository.findStopByMasterRouteAndStation_Name(route, request.finish()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station namei in this Route! (Final Stop is missing)"));
+        Integer place = request.place();
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        checkSelectedStopOrders(startId, finishId, route);
+
+        Ticket ticket = new Ticket(passenger, route, start, finish, place);
+        ticketRepository.save(ticket);
+
+        bookService.reserve(route, start, finish, place, ticket.getUuid());
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticket);
+    }
+
+    public void checkSelectedStopOrders(Long startId, Long finishId, Route route) {
+        if (startId >= finishId) {
+            throw new IllegalStateException("Stop orders are not correct!");
+        }
+
+        if (!route.hasStopId(startId) || !route.hasStopId(finishId)) {
+            throw new IllegalStateException("These stop(s) do(es)n't belong to this route");
+        }
     }
 }

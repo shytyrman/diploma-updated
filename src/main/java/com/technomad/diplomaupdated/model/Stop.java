@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(name = "unique-station-in-route", columnNames = {"station_id", "route-id"})})
 public class Stop{
 
     @Id
