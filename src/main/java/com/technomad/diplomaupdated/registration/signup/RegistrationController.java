@@ -38,7 +38,7 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(appUserDto);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class RegistrationController {
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }
