@@ -41,8 +41,9 @@ public class RouteController {
     @GetMapping(params = {"routeId"})
     public ResponseEntity<?> getRouteById(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
-        Optional<Route> optionalResult = routeRepository.findById(routeId);
-        Route result = optionalResult.orElseThrow(() -> new IllegalStateException("There is no such route!"));
+//        Optional<Route> optionalResult = routeRepository.findById(routeId);
+        Optional<Route> optionalResult = routeRepository.findRouteByDriverAndId(appUser, routeId);
+        Route result = optionalResult.orElseThrow(() -> new IllegalStateException("There is no such route or this route doesn't belong to this user!"));
         result.getRouteStations().sort(stopsComparatorByOrder);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(result);

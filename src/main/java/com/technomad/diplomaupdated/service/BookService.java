@@ -11,6 +11,7 @@ import com.technomad.diplomaupdated.model.state.PlaceState;
 import com.technomad.diplomaupdated.repository.TicketCodeHolderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,14 @@ public class BookService {
 
     private final RoutePiecesComparator routePiecesComparator;
     private final TicketCodeHolderRepository ticketCodeHolderRepository;
+    private final Integer busPlacesCount = 40;
 
     public List<Place> getReservedPlaces(Route route, Stop start, Stop finish) {
 
         List<Place> result = new ArrayList<>();
 
         //Initializing all places
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < busPlacesCount; i++) {
             if (route.isPlaceFreeInRouteBetweenStops(i, start, finish)) {
                 result.add(new Place(i, PlaceState.FREE));
             }
@@ -40,7 +42,12 @@ public class BookService {
         return result;
     }
 
+    @Transactional
     public void reserve(Route route, Stop start, Stop finish, Integer place, UUID uuid) {
+
+        if (place > busPlacesCount) {
+            throw new IllegalStateException("There is no such place in this bus!");
+        }
 
         route.getRoutePieces().sort(routePiecesComparator);
         Boolean active = false;

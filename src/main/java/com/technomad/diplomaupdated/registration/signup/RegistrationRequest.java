@@ -5,15 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class RegistrationRequest {
+public record RegistrationRequest(String firstName, String lastName, String password, String username, String role) {
 
-    private final String firstName = "Name";
-    private final String lastName = "Surname";
-    private final String password;
-    private final String username;
-    private final String role;
 }

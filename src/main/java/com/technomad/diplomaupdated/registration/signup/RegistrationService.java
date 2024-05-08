@@ -8,6 +8,7 @@ import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenRepository;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class RegistrationService {
 
     public ConfirmationToken register(RegistrationRequest request) {
 
-        AppUserRole assigningRoleValue = switch (request.getRole()) {
+        AppUserRole assigningRoleValue = switch (request.role()) {
             case "admin" -> AppUserRole.ADMIN;
             case "passenger" -> AppUserRole.PASSENGER;
             case "driver" -> AppUserRole.DRIVER;
@@ -36,16 +37,16 @@ public class RegistrationService {
             throw new IllegalStateException("You haven't defined a user role!");
         }
 
-        boolean isValidEmail = emailValidator.test(request.getUsername());
+        boolean isValidEmail = emailValidator.test(request.username());
         if (!isValidEmail) {
-            throw new IllegalStateException("email not valid");
+            throw new IllegalStateException("username not valid");
         }
         ConfirmationToken result = appUserService.signUpUser(
                 new AppUser(
-                        "Name",
-                        "Surname",
-                        request.getUsername(),
-                        request.getPassword(),
+                        StringUtils.capitalize(request.firstName().toLowerCase()),
+                        StringUtils.capitalize(request.lastName().toLowerCase()),
+                        request.username().toLowerCase(),
+                        request.password(),
                         assigningRoleValue
                 )
         );
@@ -58,20 +59,20 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getTokenByUsername(username)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new IllegalStateException("Activation code not found!"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new IllegalStateException("Username already confirmed!");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new IllegalStateException("Activation code is expired!");
         }
 
         if (!confirmationToken.getToken().equals(token)) {
-            throw new IllegalStateException("wrong token for username, actual token: " + confirmationTokenRepository.findByAppUserId(appUserRepository.findByUsername(username).get().getId()).orElseThrow().getToken().toString() + " , provided token: " + token);
+            throw new IllegalStateException("Wrong code for username, actual code: " + confirmationTokenRepository.findByAppUserId(appUserRepository.findByUsername(username).get().getId()).orElseThrow().getToken().toString() + " , provided token: " + token);
         }
 
         confirmationTokenService.setConfirmedAt(token);

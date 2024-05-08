@@ -13,6 +13,7 @@ import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.repository.TicketRepository;
 import com.technomad.diplomaupdated.service.BookService;
+import com.technomad.diplomaupdated.service.mapper.TicketMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class BookController {
     private RouteRepository routeRepository;
     private StopRepository stopRepository;
     private TicketRepository ticketRepository;
+    private TicketMapper ticketMapper;
 
     @GetMapping(path = "places")
     public ResponseEntity<?> getPlaces(@RequestBody GetPlacesRequest request) {
@@ -76,11 +78,10 @@ public class BookController {
         checkSelectedStopOrders(startId, finishId, route);
 
         Ticket ticket = new Ticket(passenger, route, start, finish, place);
+        bookService.reserve(route, start, finish, place, ticket.getUuid());
         ticketRepository.save(ticket);
 
-        bookService.reserve(route, start, finish, place, ticket.getUuid());
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticket);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticketMapper.ticketToTicketDto(ticket));
     }
 
     @PostMapping(path = "reserve/by-name")
@@ -96,11 +97,10 @@ public class BookController {
         checkSelectedStopOrders(startId, finishId, route);
 
         Ticket ticket = new Ticket(passenger, route, start, finish, place);
+        bookService.reserve(route, start, finish, place, ticket.getUuid());
         ticketRepository.save(ticket);
 
-        bookService.reserve(route, start, finish, place, ticket.getUuid());
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticket);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticketMapper.ticketToTicketDto(ticket));
     }
 
     public void checkSelectedStopOrders(Long startId, Long finishId, Route route) {

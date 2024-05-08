@@ -18,4 +18,5 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 //    public Optional<ArrayList<Route>> findRoutesByDriver(String driver);
 
     public List<Route> findByDriverId(Long id);
+    public Optional<Route> findRouteByDriverAndId(AppUser driver, Long routeId);
 }

@@ -2,7 +2,9 @@ package com.technomad.diplomaupdated.controller.passenger;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Ticket;
+import com.technomad.diplomaupdated.model.response.TicketDto;
 import com.technomad.diplomaupdated.repository.TicketRepository;
+import com.technomad.diplomaupdated.service.mapper.TicketMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +21,26 @@ import java.util.List;
 public class TicketController {
 
     private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
     @GetMapping(path = "tickets")
     public ResponseEntity<?> getMyTickets(@AuthenticationPrincipal AppUser appUser) {
 
-        List<Ticket> result = ticketRepository.findAllByTicketOwner(appUser);
+        List<Ticket> tickets = ticketRepository.findAllByTicketOwner(appUser);
+        List<TicketDto> result = ticketMapper.ticketListToTicketDtoList(tickets);
+
         return ResponseEntity.status(HttpStatus.FOUND).body(result);
     }
 
     @GetMapping(path = "ticket")
-    public ResponseEntity<?> getSpecificTicket(@AuthenticationPrincipal AppUser appUser, @RequestParam Long ticketId) {
+    public ResponseEntity<?> getTicketById(@AuthenticationPrincipal AppUser appUser, @RequestParam Long ticketId) {
+
+        Ticket ticket = ticketRepository.findTicketByTicketOwnerAndId(appUser, ticketId).orElseThrow(() -> new IllegalStateException("Current user doen't have such ticket with this id!"));
+        TicketDto result = ticketMapper.ticketToTicketDto(ticket);
+        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+    }
+
+    @GetMapping(path = "ticket/uuid")
+    public ResponseEntity<?> getTicketUuid(@AuthenticationPrincipal AppUser appUser, @RequestParam Long ticketId) {
 
         List<Ticket> userTickets = ticketRepository.findAllByTicketOwner(appUser);
         String result = "";

@@ -44,7 +44,7 @@ public class RegistrationController {
     }
 
     @PostMapping(path = confirm)
-    public ResponseEntity<?> confirm(@RequestParam("username") String username, @RequestParam("token") String token) {
+    public ResponseEntity<?> confirm(@RequestParam("username") String username, @RequestParam("code") String token) {
         try {
             AppUser appUser = registrationService.confirmToken(username, token);
             AppUserDto appUserDto = AppUserDto.appUserToAppUserDto(appUser);

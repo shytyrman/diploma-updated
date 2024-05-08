@@ -3,6 +3,7 @@ package com.technomad.diplomaupdated.controller.driver;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Ticket;
 import com.technomad.diplomaupdated.model.response.TicketInfos;
+import com.technomad.diplomaupdated.model.state.TicketState;
 import com.technomad.diplomaupdated.repository.TicketCodeHolderRepository;
 import com.technomad.diplomaupdated.repository.TicketRepository;
 import com.technomad.diplomaupdated.service.mapper.TicketMapper;
@@ -31,17 +32,22 @@ public class TicketCheckController {
     public ResponseEntity<?> isTicketValid(@AuthenticationPrincipal AppUser appUser, @RequestParam String ticketUuid, @RequestParam Long routeId) {
 
         UUID uuid = UUID.fromString(ticketUuid);
-        try {
-            if (ticketCheckService.check(uuid, routeId)) {
+//        try {
+            if (!ticketCheckService.check(uuid, routeId)) {
+                throw new IllegalStateException("Something is not compatible with uuid and routeId");
+            }
                 Ticket passengerTicket = ticketRepository.findTicketByUuidAndForRoute_Id(uuid, routeId).orElseThrow(() -> new IllegalStateException("Ticket is missing"));
                 TicketInfos result = ticketMapper.ticketToTicketInfos(passengerTicket);
+                passengerTicket.setTicketState(TicketState.CHECKED);
+                ticketRepository.save(passengerTicket);
                 return ResponseEntity.status(HttpStatus.OK).body(result);
-            }
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
 
-        return ResponseEntity.status(HttpStatus.OK).body("The ticket is not valid!");
+//            }
+//        }
+//        catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK).body("The ticket is not valid!");
     }
-}
+    }
