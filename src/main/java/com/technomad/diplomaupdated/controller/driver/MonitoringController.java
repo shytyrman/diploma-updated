@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/monitoring")
 @AllArgsConstructor
-public class            MonitoringController {
+public class MonitoringController {
 
     private final RouteRepository routeRepository;
     private final MonitoringService monitoringService;
@@ -32,6 +32,7 @@ public class            MonitoringController {
 
         Route route = routeRepository.getReferenceById(routeId);
         List<Stop> stops = route.getRouteStations();
+        stops.sort(stopsComparator);
 
         Boolean notPassedExists = monitoringService.isNotPassedExists(route);
 

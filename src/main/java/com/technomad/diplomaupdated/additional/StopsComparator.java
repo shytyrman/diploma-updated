@@ -10,6 +10,6 @@ public class StopsComparator implements Comparator<Stop> {
 
     @Override
     public int compare(Stop o1, Stop o2) {
-        return (int)(o2.getId() - o1.getId());
+        return (int)(o1.getId() - o2.getId());
     }
 }
