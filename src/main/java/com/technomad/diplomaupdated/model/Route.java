@@ -27,6 +27,7 @@ public class Route {
     )
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private RouteState routeState;
     @ManyToOne
     private AppUser driver;
