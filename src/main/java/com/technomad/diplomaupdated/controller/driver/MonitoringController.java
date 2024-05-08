@@ -68,7 +68,20 @@ public class MonitoringController {
     public ResponseEntity<?> launch(@AuthenticationPrincipal AppUser appUser, @RequestParam Long routeId) {
 
         Route route = routeRepository.getReferenceById(routeId);
+        List<Stop> stops = route.getRouteStations();
         route.setRouteState(RouteState.ACTIVE);
+
+        if (!stopRepository.existsStopsByMasterRoute(route)) {
+            throw new IllegalStateException("There is no enough stops in route!");
+        }
+
+        stops.sort(stopsComparator);
+
+        Stop firstStop = stops.get(0);
+        firstStop.setState(StopState.STAY);
+        stopRepository.save(firstStop);
+
+        stops.sort(stopsComparator);
         routeRepository.save(route);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Route launched succesfully!");
