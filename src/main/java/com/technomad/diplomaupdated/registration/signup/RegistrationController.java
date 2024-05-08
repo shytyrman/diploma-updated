@@ -1,10 +1,14 @@
 package com.technomad.diplomaupdated.registration.signup;
 
+import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.appuser.AppUserDto;
 import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,25 +30,26 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping(path = "confirm")
+    @PostMapping(path = "confirm")
     public ResponseEntity<?> confirm(@RequestParam("username") String username, @RequestParam("token") String token) {
         try {
-            String result = registrationService.confirmToken(username, token);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+            AppUser appUser = registrationService.confirmToken(username, token);
+            AppUserDto appUserDto = AppUserDto.appUserToAppUserDto(appUser);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(appUserDto);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
         }
     }
 
     @PostMapping(path = "resend")
     public ResponseEntity<?> resend(@RequestParam("username") String username) {
         try {
-            String result = confirmationTokenService.resendCode(username);
+            ConfirmationToken result = confirmationTokenService.resendCode(username);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e);
         }
     }
 }

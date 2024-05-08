@@ -28,7 +28,7 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }
 
-    public String resendCode(String username) {
+    public ConfirmationToken resendCode(String username) {
 
         Optional<AppUser> appUser = appUserRepository.findByUsername(username);
         Long appUserId = appUser.get().getId();
@@ -55,6 +55,6 @@ public class ConfirmationTokenService {
 
         saveConfirmationToken(confirmationToken);
 
-        return code;
+        return confirmationToken;
     }
 }

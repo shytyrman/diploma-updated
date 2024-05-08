@@ -1,6 +1,8 @@
 package com.technomad.diplomaupdated.controller.admin;
 
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
+import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.appuser.AppUserDto;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.request.ReservePlacesRequest;
@@ -11,6 +13,7 @@ import com.technomad.diplomaupdated.repository.StopRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +29,10 @@ public class BaseController {
     private final StopsComparatorByOrder stopsComparatorByOrder;
 
     @GetMapping
-    public ResponseEntity<?> base() {
+    public ResponseEntity<?> base(@AuthenticationPrincipal AppUser appUser) {
 //        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
-        return ResponseEntity.status(HttpStatus.CREATED).body("Logged succesfully!");
+        AppUserDto appUserDto = AppUserDto.appUserToAppUserDto(appUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(appUserDto);
     }
 
     @GetMapping(path = "test/getStopByName", params = "stopName")

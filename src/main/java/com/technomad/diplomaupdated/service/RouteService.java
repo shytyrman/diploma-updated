@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ public class RouteService {
     private final RoutePieceRepository routePieceRepository;
     private final StopsComparatorByOrder stopsComparatorByOrder;
 
+    @Transactional
     public Route addRoute(CreateRouteRequest request, AppUser appUser) {
 
         ArrayList<CreateRouteStopRequest> stopRequests = request.stops();

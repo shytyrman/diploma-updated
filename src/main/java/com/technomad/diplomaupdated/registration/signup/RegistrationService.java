@@ -54,7 +54,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public String confirmToken(String username, String token) {
+    public AppUser confirmToken(String username, String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getTokenByUsername(username)
                 .orElseThrow(() ->
@@ -77,6 +77,6 @@ public class RegistrationService {
         confirmationTokenService.setConfirmedAt(token);
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getUsername());
-        return "confirmed";
+        return confirmationToken.getAppUser();
     }
 }
