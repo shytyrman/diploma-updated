@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface StationRepository extends JpaRepository<Station, Long> {
     Station getByName(String station);
     Optional<Station> findStationByName(String name);
+    Boolean existsStationByName(String name);
 }

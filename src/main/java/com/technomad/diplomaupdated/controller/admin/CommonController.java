@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,10 @@ public class CommonController {
 
         for (String name : request.names()
              ) {
-            createStation(name);
+            name = StringUtils.capitalize(name.toLowerCase());
+            if (!stationRepository.existsStationByName(name)) {
+                createStation(name);
+            }
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(getRoutes());
