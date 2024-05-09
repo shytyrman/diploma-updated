@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.service.ticket;
 
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.repository.TicketCodeHolderRepository;
 import com.technomad.diplomaupdated.repository.TicketRepository;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class MinimalTicketCheckService implements TicketCheckService{
 //        ticketRepository.findTicketByUuidAndForRoute_Id(uuid, routeId).orElseThrow(() -> new IllegalStateException("Ticket is missing!"));
 //        ticketCodeHolderRepository.findTicketCodeHolderByUuidAndMasterRoutePiece_MasterRoute_Id(uuid, routeId).orElseThrow(() -> new IllegalStateException("Ticket code is missing!"));
         if (!ticketCodeHolderRepository.existsTicketCodeHolderByUuidAndMasterRoutePiece_MasterRoute_Id(uuid, routeId)) {
-            throw new IllegalStateException("Ticket is missing in route!");
+            throw new IllegalRequestException("Ticket is missing in route!");
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package com.technomad.diplomaupdated.model;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.state.TicketState;
 import jakarta.persistence.*;
@@ -43,16 +44,16 @@ public class Ticket {
     public Ticket(AppUser ticketOwner, Route forRoute, Stop fromStop, Stop toStop, Integer place) {
         this.ticketOwner = ticketOwner;
         if (!forRoute.getRouteState().equals(RouteState.AVAILABLE)) {
-            throw new IllegalStateException("This Route is already done!");
+            throw new IllegalRequestException("This Route is already done!");
         }
         this.forRoute = forRoute;
         if (!forRoute.hasStop(fromStop) && !forRoute.hasStop(toStop)) {
-            throw new IllegalStateException("Stops are not from this Route!");
+            throw new IllegalRequestException("Stops are not from this Route!");
         }
         this.fromStop = fromStop;
         this.toStop = toStop;
         if (!forRoute.isPlaceFreeInRouteBetweenStops(place, fromStop, toStop)) {
-            throw new IllegalStateException("The given place between Stops: " + fromStop + " - " + toStop + ". isn't free.");
+            throw new IllegalRequestException("The given place between Stops: " + fromStop + " - " + toStop + ". isn't free.");
         }
         this.place = place;
         this.uuid = UUID.randomUUID();

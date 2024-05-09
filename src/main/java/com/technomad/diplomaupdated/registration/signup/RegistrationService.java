@@ -4,6 +4,7 @@ import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.appuser.AppUserRepository;
 import com.technomad.diplomaupdated.appuser.AppUserRole;
 import com.technomad.diplomaupdated.appuser.AppUserService;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenRepository;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
@@ -34,12 +35,12 @@ public class RegistrationService {
         };
 
         if (assigningRoleValue == null) {
-            throw new IllegalStateException("You haven't defined a user role!");
+            throw new IllegalRequestException("You haven't defined a user role!");
         }
 
         boolean isValidEmail = emailValidator.test(request.username());
         if (!isValidEmail) {
-            throw new IllegalStateException("username not valid");
+            throw new IllegalRequestException("username not valid");
         }
         ConfirmationToken result = appUserService.signUpUser(
                 new AppUser(
@@ -59,20 +60,20 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getTokenByUsername(username)
                 .orElseThrow(() ->
-                        new IllegalStateException("Activation code not found!"));
+                        new IllegalRequestException("Activation code not found!"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Username already confirmed!");
+            throw new IllegalRequestException("Username already confirmed!");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Activation code is expired!");
+            throw new IllegalRequestException("Activation code is expired!");
         }
 
         if (!confirmationToken.getToken().equals(token)) {
-            throw new IllegalStateException("Wrong code for username, actual code: " + confirmationTokenRepository.findByAppUserId(appUserRepository.findByUsername(username).get().getId()).orElseThrow().getToken().toString() + " , provided token: " + token);
+            throw new IllegalRequestException("Wrong code for username, actual code: " + confirmationTokenRepository.findByAppUserId(appUserRepository.findByUsername(username).get().getId()).orElseThrow().getToken().toString() + " , provided token: " + token);
         }
 
         confirmationTokenService.setConfirmedAt(token);

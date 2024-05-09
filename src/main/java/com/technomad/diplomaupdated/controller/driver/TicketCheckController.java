@@ -1,6 +1,7 @@
 package com.technomad.diplomaupdated.controller.driver;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Ticket;
 import com.technomad.diplomaupdated.model.response.TicketInfos;
 import com.technomad.diplomaupdated.model.state.TicketState;
@@ -9,7 +10,6 @@ import com.technomad.diplomaupdated.repository.TicketRepository;
 import com.technomad.diplomaupdated.service.mapper.TicketMapper;
 import com.technomad.diplomaupdated.service.ticket.TicketCheckService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,14 +33,14 @@ public class TicketCheckController {
 
         UUID uuid = UUID.fromString(ticketUuid);
 //        try {
-            if (!ticketCheckService.check(uuid, routeId)) {
-                throw new IllegalStateException("Something is not compatible with uuid and routeId");
-            }
-                Ticket passengerTicket = ticketRepository.findTicketByUuidAndForRoute_Id(uuid, routeId).orElseThrow(() -> new IllegalStateException("Ticket is missing"));
-                TicketInfos result = ticketMapper.ticketToTicketInfos(passengerTicket);
-                passengerTicket.setTicketState(TicketState.CHECKED);
-                ticketRepository.save(passengerTicket);
-                return ResponseEntity.status(HttpStatus.OK).body(result);
+        if (!ticketCheckService.check(uuid, routeId)) {
+            throw new IllegalRequestException("Something is not compatible with uuid and routeId");
+        }
+        Ticket passengerTicket = ticketRepository.findTicketByUuidAndForRoute_Id(uuid, routeId).orElseThrow(() -> new IllegalStateException("Ticket is missing"));
+        TicketInfos result = ticketMapper.ticketToTicketInfos(passengerTicket);
+        passengerTicket.setTicketState(TicketState.CHECKED);
+        ticketRepository.save(passengerTicket);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
 
 //            }
 //        }
@@ -50,4 +50,4 @@ public class TicketCheckController {
 //
 //        return ResponseEntity.status(HttpStatus.OK).body("The ticket is not valid!");
     }
-    }
+}

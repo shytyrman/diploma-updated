@@ -1,11 +1,11 @@
 package com.technomad.diplomaupdated.controller.driver;
 
-import com.technomad.diplomaupdated.additional.RoutePiecesComparator;
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
-import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.model.request.CreateRouteRequest;
+import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.service.RouteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,7 @@ public class RouteController {
         List<Route> result = routeRepository.findByDriverId(appUser.getId());
 
         for (Route route : result
-             ) {
+        ) {
             route.getRouteStations().sort(stopsComparatorByOrder);
         }
 
@@ -51,7 +52,6 @@ public class RouteController {
 
     @PostMapping(path = "create")
     public ResponseEntity<?> createRoute(@AuthenticationPrincipal AppUser appUser, @RequestBody CreateRouteRequest request) {
-
         Route route = routeService.addRoute(request, appUser);
         routeService.addPiecesToRoute(route);
         return ResponseEntity.status(HttpStatus.CREATED).body(route);

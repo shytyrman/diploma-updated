@@ -2,6 +2,7 @@ package com.technomad.diplomaupdated.controller.driver;
 
 import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
@@ -37,7 +38,7 @@ public class MonitoringController {
         Boolean notPassedExists = monitoringService.isNotPassedExists(route);
 
         if (!route.getRouteState().equals(RouteState.ACTIVE)) {
-            throw new IllegalStateException("Route isn't active!");
+            throw new IllegalRequestException("Route isn't active!");
         }
 
         if (!notPassedExists) {
@@ -72,7 +73,7 @@ public class MonitoringController {
         route.setRouteState(RouteState.ACTIVE);
 
         if (!stopRepository.existsStopsByMasterRoute(route)) {
-            throw new IllegalStateException("There is no enough stops in route!");
+            throw new IllegalRequestException("There is no enough stops in route!");
         }
 
         stops.sort(stopsComparator);

@@ -1,7 +1,7 @@
 package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.additional.RoutePiecesComparator;
-import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.RoutePiece;
 import com.technomad.diplomaupdated.model.Stop;
@@ -33,8 +33,7 @@ public class BookService {
         for (int i = 0; i < busPlacesCount; i++) {
             if (route.isPlaceFreeInRouteBetweenStops(i, start, finish)) {
                 result.add(new Place(i, PlaceState.FREE));
-            }
-            else {
+            } else {
                 result.add(new Place(i, PlaceState.TAKEN));
             }
         }
@@ -46,14 +45,14 @@ public class BookService {
     public void reserve(Route route, Stop start, Stop finish, Integer place, UUID uuid) {
 
         if (place > busPlacesCount) {
-            throw new IllegalStateException("There is no such place in this bus!");
+            throw new IllegalRequestException("There is no such place in this bus!");
         }
 
         route.getRoutePieces().sort(routePiecesComparator);
         Boolean active = false;
 
         for (RoutePiece routePiece : route.getRoutePieces()
-             ) {
+        ) {
             if (routePiece.getStartPoint().equals(start)) {
                 active = true;
             }

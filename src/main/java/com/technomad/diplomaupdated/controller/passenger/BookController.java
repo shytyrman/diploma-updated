@@ -1,6 +1,7 @@
 package com.technomad.diplomaupdated.controller.passenger;
 
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.Ticket;
@@ -12,7 +13,6 @@ import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.repository.TicketRepository;
 import com.technomad.diplomaupdated.service.BookService;
 import com.technomad.diplomaupdated.service.mapper.TicketMapper;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -117,7 +117,7 @@ public class BookController {
 
         List<TicketDto> result = new ArrayList<>();
         for (Integer place : places
-             ) {
+        ) {
             Ticket ticket = new Ticket(passenger, route, start, finish, place);
             bookService.reserve(route, start, finish, place, ticket.getUuid());
             ticketRepository.save(ticket);
@@ -153,13 +153,14 @@ public class BookController {
 
     public void checkSelectedStopOrders(Long startId, Long finishId, Route route) {
         if (startId >= finishId) {
-            throw new IllegalStateException("Stop orders are not correct!");
+            throw new IllegalRequestException("Stop orders are not correct!");
         }
 
         if (!route.hasStopId(startId) || !route.hasStopId(finishId)) {
-            throw new IllegalStateException("These stop(s) do(es)n't belong to this route");
+            throw new IllegalRequestException("These stop(s) do(es)n't belong to this route");
         }
     }
+
     @GetMapping(path = "/cost")
     public ResponseEntity<?> getCostBetweenStops(@RequestParam Long routeId, @RequestParam String startStop, @RequestParam String finishStop) {
 

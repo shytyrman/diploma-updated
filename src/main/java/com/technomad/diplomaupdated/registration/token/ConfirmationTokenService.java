@@ -3,6 +3,7 @@ package com.technomad.diplomaupdated.registration.token;
 import com.technomad.diplomaupdated.additional.CodeGenerator;
 import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.appuser.AppUserRepository;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final AppUserRepository appUserRepository;
 
-    public void saveConfirmationToken(ConfirmationToken confirmationToken){
+    public void saveConfirmationToken(ConfirmationToken confirmationToken) {
         confirmationTokenRepository.save(confirmationToken);
     }
 
@@ -40,7 +41,7 @@ public class ConfirmationTokenService {
             ConfirmationToken toDelete = token.get();
             confirmationTokenRepository.delete(toDelete);
         } else if (tokenExists) {
-            throw new IllegalStateException("The profile is confirmed already!");
+            throw new IllegalRequestException("The profile is confirmed already!");
         }
 
         String code = CodeGenerator.generate();

@@ -2,6 +2,7 @@ package com.technomad.diplomaupdated.service;
 
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;
+import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.RoutePiece;
 import com.technomad.diplomaupdated.model.state.RouteState;
@@ -50,7 +51,7 @@ public class RouteService {
             Stop currentStop = new Stop();
             
             if (stationRepository.getByName(element.station()) == null) {
-                throw new IllegalStateException("Wrong stop name, try with correct station name!");
+                throw new IllegalRequestException("Wrong stop name, try with correct station name!");
             }
 
             currentStop.setArrivalTime(element.arrivalTime());

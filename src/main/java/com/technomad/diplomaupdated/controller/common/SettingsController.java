@@ -17,12 +17,7 @@ public class SettingsController {
 
     @PostMapping(path = "/profile")
     public ResponseEntity<?> profile(@AuthenticationPrincipal AppUser appUser, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
-        try {
-            String result = settingsService.changeNameAndSurname(appUser, firstName, lastName);
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        String result = settingsService.changeNameAndSurname(appUser, firstName, lastName);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
