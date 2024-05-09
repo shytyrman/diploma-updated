@@ -32,9 +32,9 @@ public class WebSecurityConfig {
                     request.requestMatchers("/swagger/**").permitAll();
                     request.anyRequest().authenticated();
                 })
-                .formLogin(form ->
-                        form.failureHandler(customAuthenticationFailureHandler)
-                                .loginPage("/login"))
+//                .formLogin(form ->
+//                        form.failureHandler(customAuthenticationFailureHandler)
+//                                .loginPage("/login"))
                 .authenticationProvider(daoAuthenticationProvider());
 
         http.httpBasic(Customizer.withDefaults());
