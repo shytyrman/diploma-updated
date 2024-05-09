@@ -4,16 +4,15 @@ import com.technomad.diplomaupdated.appuser.AppUser;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.Stop;
 import com.technomad.diplomaupdated.model.Ticket;
-import com.technomad.diplomaupdated.model.request.GetPlacesByStopNamesRequest;
-import com.technomad.diplomaupdated.model.request.GetPlacesRequest;
-import com.technomad.diplomaupdated.model.request.ReservePlacesByStopNamesRequest;
-import com.technomad.diplomaupdated.model.request.ReservePlacesRequest;
+import com.technomad.diplomaupdated.model.request.*;
 import com.technomad.diplomaupdated.model.response.Place;
+import com.technomad.diplomaupdated.model.response.TicketDto;
 import com.technomad.diplomaupdated.repository.RouteRepository;
 import com.technomad.diplomaupdated.repository.StopRepository;
 import com.technomad.diplomaupdated.repository.TicketRepository;
 import com.technomad.diplomaupdated.service.BookService;
 import com.technomad.diplomaupdated.service.mapper.TicketMapper;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -102,6 +102,53 @@ public class BookController {
         ticketRepository.save(ticket);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ticketMapper.ticketToTicketDto(ticket));
+    }
+
+    @PostMapping(path = "reserve-several")
+    public ResponseEntity<?> reserveSeveralPlaces(@AuthenticationPrincipal AppUser passenger, @RequestBody ReserveSeveralPlacesRequest request) {
+        Route route = routeRepository.findById(request.route()).orElseThrow(() -> new IllegalStateException("There is no Route with such id!"));
+        Stop start = stopRepository.findById(request.start()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Start Stop is missing)"));
+        Stop finish = stopRepository.findById(request.finish()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Final Stop is missing)"));
+        List<Integer> places = request.places();
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        checkSelectedStopOrders(startId, finishId, route);
+
+        List<TicketDto> result = new ArrayList<>();
+        for (Integer place : places
+             ) {
+            Ticket ticket = new Ticket(passenger, route, start, finish, place);
+            bookService.reserve(route, start, finish, place, ticket.getUuid());
+            ticketRepository.save(ticket);
+            result.add(ticketMapper.ticketToTicketDto(ticket));
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
+    }
+
+    @PostMapping(path = "reserve-several/by-name")
+    public ResponseEntity<?> reserveSeveralPlaceByStopNames(@AuthenticationPrincipal AppUser passenger, @RequestBody ReserveSeveralPlacesByStopNamesRequest request) {
+
+        Route route = routeRepository.findById(request.route()).orElseThrow(() -> new IllegalStateException("There is no Route with such id!"));
+        Stop start = stopRepository.findStopByMasterRouteAndStation_Name(route, request.start()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Start Stop is missing)"));
+        Stop finish = stopRepository.findStopByMasterRouteAndStation_Name(route, request.finish()).orElseThrow(() -> new IllegalStateException("There is no any Stop with such Station name in this Route! (Final Stop is missing)"));
+        List<Integer> places = request.places();
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        checkSelectedStopOrders(startId, finishId, route);
+
+        List<TicketDto> result = new ArrayList<>();
+        for (Integer place : places
+        ) {
+            Ticket ticket = new Ticket(passenger, route, start, finish, place);
+            bookService.reserve(route, start, finish, place, ticket.getUuid());
+            ticketRepository.save(ticket);
+            result.add(ticketMapper.ticketToTicketDto(ticket));
+        }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
     public void checkSelectedStopOrders(Long startId, Long finishId, Route route) {
