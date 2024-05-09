@@ -5,7 +5,7 @@ import com.technomad.diplomaupdated.registration.token.ConfirmationToken;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenRepository;
 import com.technomad.diplomaupdated.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.cglib.core.Local;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AppUserService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MESSAGE =
@@ -36,15 +36,15 @@ public class AppUserService implements UserDetailsService {
 
     @Transactional
     public ConfirmationToken signUpUser(AppUser appUser) {
+        log.info("Sign up user by name {}", appUser.getUsername());
         Optional<AppUser> optionalAppUser = appUserRepository.findByUsername(appUser.getUsername());
         boolean userExists = optionalAppUser.isPresent();
 
         if (userExists && optionalAppUser.get().isEnabled()) {
             throw new IllegalStateException("email already taken");
-        }
-        else if (userExists && !appUser.getEnabled()) {
+        } else if (userExists && !appUser.getEnabled()) {
             AppUser existingOne = appUserRepository.findByUsername(appUser.getUsername()).get();
-            System.out.println("deleting");
+            log.info("Deleting user by name {}", existingOne.getUsername());
             confirmationTokenRepository.deleteByAppUserId(existingOne.getId());
             appUserRepository.delete(existingOne);
         }
