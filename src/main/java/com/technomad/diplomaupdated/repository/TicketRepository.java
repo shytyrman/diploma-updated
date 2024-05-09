@@ -12,10 +12,9 @@ import java.util.UUID;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    public List<Ticket> findAllByTicketOwner(AppUser appUser);
-
-    public Optional<Ticket> findTicketByUuidAndForRoute_Id(UUID uuid, Long routeId);
-    public Optional<Ticket> findTicketByTicketOwnerAndId(AppUser appUser, Long id);
-    public List<Ticket> findAllByUuidAndForRoute_IdOrderById(UUID uuid, Long routeId);
+    List<Ticket> findAllByTicketOwner(AppUser appUser);
+    Optional<Ticket> findTicketByUuidAndForRoute_Id(UUID uuid, Long routeId);
+    Optional<Ticket> findTicketByTicketOwnerAndId(AppUser appUser, Long id);
+    List<Ticket> findAllByUuidAndForRoute_IdOrderById(UUID uuid, Long routeId);
 }
 

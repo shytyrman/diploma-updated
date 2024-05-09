@@ -56,6 +56,10 @@ public class AppUserService implements UserDetailsService {
 
         appUserRepository.save(appUser);
 
+        return generateConfirmationToken(appUser);
+    }
+
+    private ConfirmationToken generateConfirmationToken(AppUser appUser) {
         String token = CodeGenerator.generate();
 
         // TODO: Send confirmation token

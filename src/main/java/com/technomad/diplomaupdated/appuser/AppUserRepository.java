@@ -12,7 +12,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
-    public Optional<AppUser> findByUsername(String username);
+    Optional<AppUser> findByUsername(String username);
 
     @Transactional
     @Modifying

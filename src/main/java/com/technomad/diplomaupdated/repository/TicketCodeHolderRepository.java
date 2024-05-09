@@ -12,6 +12,6 @@ import java.util.UUID;
 @Repository
 public interface TicketCodeHolderRepository extends JpaRepository<TicketCodeHolder, Long> {
 
-    public Boolean existsTicketCodeHolderByUuidAndMasterRoutePiece_MasterRoute_Id(UUID uuid, Long routeId);
+    Boolean existsTicketCodeHolderByUuidAndMasterRoutePiece_MasterRoute_Id(UUID uuid, Long routeId);
 //    public List<TicketCodeHolder> findAllByUuidAndMasterRoutePiece_MasterRoute_IdOrderByMasterRoutePieceId(UUID uuid, Long routeId);
 }

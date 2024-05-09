@@ -15,12 +15,12 @@ import java.util.Optional;
 public interface StopRepository extends JpaRepository<Stop, Long> {
 
 //    public List<Stop> findAllByDepartureTime_Date(LocalDate departureTime_date);
-    public List<Stop> findAllByStationName(String name);
-    public List<Stop> findAllByState(StopState state);
-    public List<Stop> findAllByMasterRoute(Route route);
-    public List<Stop> findAllByStationNameAndState(String name, StopState state);
-    public List<Stop> findAllByStationNameAndStateAndMasterRouteRouteState(String stopName, StopState stopState, RouteState routeState);
-    public List<Stop> findAllByStationNameAndStateAndMasterRouteRouteStateAndDepartureTime(String stopName, StopState state, RouteState routeState, LocalDateTime localDateTime);
-    public Boolean existsStopsByMasterRoute(Route route);
-    public Optional<Stop> findStopByMasterRouteAndStation_Name(Route route, String stationName);
+    List<Stop> findAllByStationName(String name);
+    List<Stop> findAllByState(StopState state);
+    List<Stop> findAllByMasterRoute(Route route);
+    List<Stop> findAllByStationNameAndState(String name, StopState state);
+    List<Stop> findAllByStationNameAndStateAndMasterRouteRouteState(String stopName, StopState stopState, RouteState routeState);
+    List<Stop> findAllByStationNameAndStateAndMasterRouteRouteStateAndDepartureTime(String stopName, StopState state, RouteState routeState, LocalDateTime localDateTime);
+    Boolean existsStopsByMasterRoute(Route route);
+    Optional<Stop> findStopByMasterRouteAndStation_Name(Route route, String stationName);
 }
