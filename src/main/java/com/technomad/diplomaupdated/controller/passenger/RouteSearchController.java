@@ -24,7 +24,7 @@ public class RouteSearchController {
     public ResponseEntity<?> searchForRoutes(@RequestParam String startStop, @RequestParam String finishStop) {
 
         List<Route> result = routeSearchService.search(startStop, finishStop);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "search", params = {"startStop", "finishStop", "date"})
@@ -33,7 +33,7 @@ public class RouteSearchController {
         LocalDate localDate = LocalDate.parse(date);
 
         List<Route> result = routeSearchService.search(startStop, finishStop, localDate);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "search", params = {"startStop", "finishStop", "date", "time"})
@@ -42,7 +42,7 @@ public class RouteSearchController {
         LocalDateTime localDateTime = LocalDateTime.parse(date + "T" + time);
 
         List<Route> result = routeSearchService.search(startStop, finishStop, localDateTime);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

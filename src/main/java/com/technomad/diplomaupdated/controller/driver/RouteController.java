@@ -46,7 +46,7 @@ public class RouteController {
         Route result = optionalResult.orElseThrow(() -> new IllegalStateException("There is no such route or this route doesn't belong to this user!"));
         result.getRouteStations().sort(stopsComparatorByOrder);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(path = "create")
