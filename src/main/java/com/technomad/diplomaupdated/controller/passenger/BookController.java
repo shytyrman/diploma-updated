@@ -63,7 +63,7 @@ public class BookController {
         checkSelectedStopOrders(startId, finishId, route);
 
         List<Place> result = bookService.getReservedPlaces(route, start, finish);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(path = "reserve")

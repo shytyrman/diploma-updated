@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,7 +43,7 @@ public class CommonController {
     public ResponseEntity<?> getRoutes() {
 
         List<Station> result = stationRepository.findAll();
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "/station/list/{station}")
@@ -55,7 +54,7 @@ public class CommonController {
         Station exceptStation = stationRepository.findStationByName(station).orElseThrow(() -> new IllegalStateException("There is no such string!"));
         List<Station> result = stationRepository.findAll();
         result.remove(exceptStation);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

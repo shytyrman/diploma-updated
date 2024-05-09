@@ -2,7 +2,6 @@ package com.technomad.diplomaupdated.controller.driver;
 
 import com.technomad.diplomaupdated.additional.StopsComparatorByOrder;
 import com.technomad.diplomaupdated.appuser.AppUser;
-import com.technomad.diplomaupdated.exception.IllegalRequestException;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.request.CreateRouteRequest;
 import com.technomad.diplomaupdated.repository.RouteRepository;
@@ -14,7 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -36,7 +34,7 @@ public class RouteController {
             route.getRouteStations().sort(stopsComparatorByOrder);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(params = {"routeId"})
@@ -47,7 +45,7 @@ public class RouteController {
         Route result = optionalResult.orElseThrow(() -> new IllegalStateException("There is no such route or this route doesn't belong to this user!"));
         result.getRouteStations().sort(stopsComparatorByOrder);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(path = "create")

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class TicketController {
         List<Ticket> tickets = ticketRepository.findAllByTicketOwner(appUser);
         List<TicketDto> result = ticketMapper.ticketListToTicketDtoList(tickets);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "ticket")
@@ -36,7 +35,7 @@ public class TicketController {
 
         Ticket ticket = ticketRepository.findTicketByTicketOwnerAndId(appUser, ticketId).orElseThrow(() -> new IllegalStateException("Current user doen't have such ticket with this id!"));
         TicketDto result = ticketMapper.ticketToTicketDto(ticket);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "ticket/uuid")
@@ -50,7 +49,7 @@ public class TicketController {
              ) {
             if (ticket.getId().equals(ticketId)) {
                 result = ticket.getUuid().toString();
-                return ResponseEntity.status(HttpStatus.FOUND).body(result);
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             }
         }
 

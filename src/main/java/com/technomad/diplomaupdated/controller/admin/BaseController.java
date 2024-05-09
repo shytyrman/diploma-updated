@@ -32,14 +32,14 @@ public class BaseController {
     public ResponseEntity<?> base(@AuthenticationPrincipal AppUser appUser) {
 //        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
         AppUserDto appUserDto = AppUserDto.appUserToAppUserDto(appUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(appUserDto);
+        return ResponseEntity.status(HttpStatus.OK).body(appUserDto);
     }
 
     @GetMapping(path = "test/getStopByName", params = "stopName")
     public ResponseEntity<?> getStopByName(@RequestParam String stopName) {
 //        List<Stop> result = stopRepository.findAllByDepartureTime_Date(LocalDateTime.now().toLocalDate());
         List<Stop> result = stopRepository.findAllByStationName(stopName);
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(path = "test/createRoutePiece")
@@ -56,7 +56,7 @@ public class BaseController {
 //
 //        routePieceRepository.save(routePiece);
         route.getRouteStations().sort(stopsComparatorByOrder);
-        return ResponseEntity.status(HttpStatus.FOUND).body(route.getRouteStations());
+        return ResponseEntity.status(HttpStatus.CREATED).body(route.getRouteStations());
     }
 
     @GetMapping(path = "test/getStopByState")
@@ -74,7 +74,7 @@ public class BaseController {
             result = null;
         }
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "test/getStopByStationNameAndState")
@@ -91,6 +91,6 @@ public class BaseController {
         else {
             result = null;
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
