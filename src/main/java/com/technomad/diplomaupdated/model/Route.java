@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SortComparator;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,5 +87,25 @@ public class Route {
             }
         }
         return true;
+    }
+
+    public BigDecimal costBetweenStops(Stop start, Stop finish) {
+
+        boolean active = false;
+        BigDecimal totalCostBetweenStops = BigDecimal.valueOf(0);
+
+        for (Stop stop : routeStations
+             ) {
+            if (active && stop.getCost() != null) {
+                totalCostBetweenStops = totalCostBetweenStops.add(stop.getCost());
+            }
+            if (stop.equals(start)) {
+                active = true;
+            }
+            if (stop.equals(finish)) {
+                break;
+            }
+        }
+        return totalCostBetweenStops;
     }
 }

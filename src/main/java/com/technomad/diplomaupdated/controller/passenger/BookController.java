@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -111,5 +112,20 @@ public class BookController {
         if (!route.hasStopId(startId) || !route.hasStopId(finishId)) {
             throw new IllegalStateException("These stop(s) do(es)n't belong to this route");
         }
+    }
+    @GetMapping(path = "/cost")
+    public ResponseEntity<?> getCostBetweenStops(@RequestParam Long routeId, @RequestParam String startStop, @RequestParam String finishStop) {
+
+        Route route = routeRepository.findById(routeId).orElseThrow(() -> new IllegalStateException("There is no such route with this id!"));
+        Stop start = stopRepository.findStopByMasterRouteAndStation_Name(route, startStop).orElseThrow(() -> new IllegalStateException("Start stops doesn't belong to this route!"));
+        Stop finish = stopRepository.findStopByMasterRouteAndStation_Name(route, finishStop).orElseThrow(() -> new IllegalStateException("Finish stop desn't belong to this route!"));
+        Long startId = start.getId();
+        Long finishId = finish.getId();
+
+        checkSelectedStopOrders(startId, finishId, route);
+
+        BigDecimal result = route.costBetweenStops(start, finish);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

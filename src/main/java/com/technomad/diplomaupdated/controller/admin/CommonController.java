@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/common/station")
+@RequestMapping(path = "/common")
 @AllArgsConstructor
 public class CommonController {
 
     private final StationRepository stationRepository;
-    @PostMapping(path = "create", params = {"name"})
+    @PostMapping(path = "/station/create", params = {"name"})
     public ResponseEntity<?> createStation(@RequestParam String name) {
 
         Station result = new Station(StringUtils.capitalize(name.toLowerCase()));
@@ -25,7 +25,7 @@ public class CommonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @PostMapping(path = "create")
+    @PostMapping(path = "/station/create")
     public ResponseEntity<?> createStationList(@RequestBody CreateStationList request) {
 
         for (String name : request.names()
@@ -36,14 +36,14 @@ public class CommonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(getRoutes());
     }
 
-    @GetMapping(path = "list")
+    @GetMapping(path = "/station/list")
     public ResponseEntity<?> getRoutes() {
 
         List<Station> result = stationRepository.findAll();
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping(path = "list/{station}")
+    @GetMapping(path = "/station/list/{station}")
     public ResponseEntity<?> getRoutesExcept(@PathVariable String station) {
 
         station = StringUtils.capitalize(station.toLowerCase());
@@ -53,4 +53,5 @@ public class CommonController {
         result.remove(exceptStation);
         return ResponseEntity.status(HttpStatus.FOUND).body(result);
     }
+
 }
