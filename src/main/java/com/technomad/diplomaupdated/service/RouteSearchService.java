@@ -1,5 +1,6 @@
 package com.technomad.diplomaupdated.service;
 
+import com.technomad.diplomaupdated.additional.StopsComparator;
 import com.technomad.diplomaupdated.model.Route;
 import com.technomad.diplomaupdated.model.state.RouteState;
 import com.technomad.diplomaupdated.model.Stop;
@@ -18,6 +19,7 @@ import java.util.List;
 public class RouteSearchService {
 
     private final StopRepository stopRepository;
+    private final StopsComparator stopsComparator;
     public List<Route> search(String startStop, String finishStop) {
 
         List<Stop> foundStartStops = stopRepository.findAllByStationNameAndStateAndMasterRouteRouteState(startStop, StopState.NOTPASSED, RouteState.AVAILABLE);
@@ -56,6 +58,7 @@ public class RouteSearchService {
             for (Stop secondStop : tempStops) {
                 if (secondStop.getStation().getName().equals(finishStop)) {
                     if (firstStop.getOrderInList() < secondStop.getOrderInList()) {
+                        tempRoute.getRouteStations().sort(stopsComparator);
                         result.add(tempRoute);
                     }
                 }
